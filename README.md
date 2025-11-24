@@ -6,16 +6,16 @@ graph TD
         direction TB
         
         subgraph "Management"
-            stateBucket[🪣 GCS Bucket<br/>(Terraform State)]
+            stateBucket["🪣 GCS Bucket<br/>(Terraform State)"]
         end
 
         subgraph "VPC Network (10.0.0.0/20)"
-            fw[🛡️ Firewall<br/>(Deny All Ingress)]
-            router[Of Router + Cloud NAT<br/>(Egress Only)]
+            fw["🛡️ Firewall<br/>(Deny All Ingress)"]
+            router["Cloud Router + Cloud NAT<br/>(Egress Only)"]
             
             subgraph "Private Subnet"
                 gke[☸️ GKE Autopilot Cluster]
-                nodes[📦 Private Nodes<br/>(No Public IP)]
+                nodes["📦 Private Nodes<br/>(No Public IP)"]
             end
         end
     end
@@ -100,3 +100,4 @@ När scriptet är klart får du ett kommando för att ansluta kubectl till ditt 
 │       ├── main.tf            # Huvudfil som anropar moduler
 │       └── terraform.tfvars   # Miljöspecifika variabler
 └── README.md
+```
