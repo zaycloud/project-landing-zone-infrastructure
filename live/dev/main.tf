@@ -13,7 +13,7 @@ provider "google" {
   region  = var.region
 }
 
-# 1. API:er
+# Enable required GCP APIs
 resource "google_project_service" "apis" {
   for_each = toset([
     "compute.googleapis.com",
@@ -27,7 +27,7 @@ resource "google_project_service" "apis" {
   disable_on_destroy = false
 }
 
-# 2. Nätverket
+# Create network resources
 module "network" {
   source     = "../../modules/network"
   project_id = var.project_id
@@ -35,15 +35,13 @@ module "network" {
   depends_on = [google_project_service.apis]
 }
 
-# 3. GKE Autopilot
+# Create GKE Autopilot cluster
 module "gke" {
-  # VIKTIGT: Se till att mappen heter exakt så här:
   source = "../../modules/gke-autopilot"
 
   project_id = var.project_id
   region     = var.region
 
-  # Variablerna matchar nu din modul!
   network     = module.network.network_name
   subnet      = module.network.subnet_name
   pods_range  = module.network.pods_range_name
@@ -53,7 +51,7 @@ module "gke" {
   depends_on = [module.network]
 }
 
-# 4. Koppla kubectl (Dynamiskt namn!)
+# Helper command to connect kubectl
 output "connect" {
   value = "gcloud container clusters get-credentials ${module.gke.cluster_name} --region ${var.region} --project ${var.project_id}"
 }
