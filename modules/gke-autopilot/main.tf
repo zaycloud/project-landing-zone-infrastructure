@@ -4,6 +4,7 @@ variable "network" {}
 variable "subnet" {}
 variable "pods_range" {}
 variable "svc_range" {}
+variable "environment" {}
 
 resource "google_container_cluster" "primary" {
   name     = "portfolio-cluster" # Vi ger det ett snyggare namn än bara "cluster"
@@ -31,17 +32,13 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-  pod_security_policy_config {
-    enabled = true
+  resource_labels = {
+    environment = var.environment
   }
 
-  resource_labels = {
-    environment = "production"
-  }
-  
   deletion_protection = false
 }
 
-output "cluster_name" { 
-  value = google_container_cluster.primary.name 
+output "cluster_name" {
+  value = google_container_cluster.primary.name
 }

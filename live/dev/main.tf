@@ -44,10 +44,11 @@ module "gke" {
   region     = var.region
 
   # Variablerna matchar nu din modul!
-  network    = module.network.network_name
-  subnet     = module.network.subnet_name
-  pods_range = module.network.pods_range_name
-  svc_range  = module.network.services_range_name
+  network     = module.network.network_name
+  subnet      = module.network.subnet_name
+  pods_range  = module.network.pods_range_name
+  svc_range   = module.network.services_range_name
+  environment = "dev"
 
   depends_on = [module.network]
 }
